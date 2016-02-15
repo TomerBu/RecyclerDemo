@@ -1,6 +1,7 @@
 package org.college.android.itomer.recyclerdemo;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.animation.OvershootInterpolator;
 import java.util.ArrayList;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.AnimationAdapter;
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,17 +31,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRecycler() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvDemo);
+        //get the data from a service... or just dummy data.
+        ArrayList<Note> notes = initDummyData();
+
+        //init the adapter & Layout Manager
+        RecyclerAdapter adapter = new RecyclerAdapter(notes, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //add animations:
+        AnimationAdapter scaleAndAlpahAdapter = addAnimations(adapter);
+
+        //use the adapter
+        recyclerView.setAdapter(scaleAndAlpahAdapter);
+
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(adapter);
+
+    }
+
+    @NonNull
+    private ArrayList<Note> initDummyData() {
         ArrayList<Note> notes = new ArrayList<>();
 
         for (int i = 0; i < 100; i++) {
             Note n = new Note(i + " title", i + " Content", R.mipmap.ic_launcher);
             notes.add(n);
         }
+        return notes;
+    }
 
-        RecyclerAdapter adapter = new RecyclerAdapter(notes, this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        //add animations:
+    @NonNull
+    private AnimationAdapter addAnimations(RecyclerAdapter adapter) {
         AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
         alphaAdapter.setDuration(100);
         alphaAdapter.setInterpolator(new AnticipateOvershootInterpolator(1f));
@@ -48,10 +69,7 @@ public class MainActivity extends AppCompatActivity {
         ScaleInAnimationAdapter scaleAndAlpahAdapter = new ScaleInAnimationAdapter(alphaAdapter);
         scaleAndAlpahAdapter.setDuration(250);
         scaleAndAlpahAdapter.setInterpolator(new OvershootInterpolator(.4f));
-
-        //use the adapter
-        recyclerView.setAdapter(scaleAndAlpahAdapter);
-
+        return scaleAndAlpahAdapter;
     }
 
     @Override

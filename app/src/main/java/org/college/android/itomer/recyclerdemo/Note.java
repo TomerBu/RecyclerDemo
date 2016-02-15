@@ -19,16 +19,61 @@ package org.college.android.itomer.recyclerdemo;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 public class Note {
-    String title;
-    String content;
+    private String title;
+    private String content;
+    private ImageState imageState;
+    private int imageResId;
 
+    //constructors:
     public Note(String title, String content, int imageResId) {
-        this.title = title;
-        this.content = content;
-        this.imageResId = imageResId;
+        setTitle(title);
+        setContent(content);
+        setImageResId(imageResId);
+        setImageState(ImageState.DROID);
     }
 
-    int imageResId;
+    //enum to define a state of the image:
+    public enum ImageState {
+        DROID(0), NONE(1);
+        private int value;
+
+        //Constructor must exist
+        private ImageState(int value) {
+            this.value = value;
+        }
+    }
+
+    /**
+     Getters and Setters:
+     */
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public ImageState getImageState() {
+        return imageState;
+    }
+    public void setImageState(ImageState imageState) {
+        this.imageState = imageState;
+    }
+
+    public void setImageResId(int imageResId) {
+        this.imageResId = imageResId;
+    }
+    public int getImageResId() {
+        return imageResId;
+    }
+
 
     @Override
     public String toString() {
