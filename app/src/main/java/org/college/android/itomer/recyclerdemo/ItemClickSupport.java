@@ -3,7 +3,9 @@ package org.college.android.itomer.recyclerdemo;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 /**
- * Code by http://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
+ * Code by Hugo from little robots:
+ * http://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
+ *
  * Usage:
  * ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new OnItemClickListener({...});
  *
@@ -124,7 +126,6 @@ public class ItemClickSupport {
     }
 
     //Interfaces:
-
     public interface OnItemClickListener {
 
         void onItemClicked(RecyclerView recyclerView, int position, RecyclerView.ViewHolder holder);

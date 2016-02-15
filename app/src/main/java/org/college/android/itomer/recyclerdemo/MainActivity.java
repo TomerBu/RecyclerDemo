@@ -19,6 +19,8 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
+    private RecyclerAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private void initRecycler() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rvDemo);
         //get the data from a service... or just dummy data.
-        ArrayList<Note> notes = initDummyData();
+        final ArrayList<Note> notes = initDummyData();
 
         //init the adapter & Layout Manager
-        RecyclerAdapter adapter = new RecyclerAdapter(notes, this);
+        adapter = new RecyclerAdapter(notes, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //add animations:
@@ -44,8 +46,17 @@ public class MainActivity extends AppCompatActivity {
         //use the adapter
         recyclerView.setAdapter(scaleAndAlpahAdapter);
 
+        //Add On Item Click Listener
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(adapter);
 
+        //Add SwipeListener
+        SwipeSupport.addTo(recyclerView).setListener(new SwipeSupport.OnItemSwipeListener() {
+            @Override
+            public void onItemSwiped(RecyclerView recyclerView, int swipeDirection, int position, RecyclerView.ViewHolder holder) {
+                notes.remove(position);
+                adapter.notifyItemRemoved(position);
+            }
+        });
     }
 
     @NonNull
